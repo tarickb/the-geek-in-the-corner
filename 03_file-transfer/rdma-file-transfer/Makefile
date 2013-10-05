@@ -2,7 +2,7 @@
 
 CFLAGS  := -Wall -Werror -g
 LD      := gcc
-LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs
+LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs -lpthread
 
 APPS    := client server
 

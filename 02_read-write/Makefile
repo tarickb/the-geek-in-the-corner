@@ -2,7 +2,7 @@
 
 CFLAGS  := -Wall -Werror -g
 LD      := gcc
-LDFLAGS := ${LDFLAGS} -lrdmacm
+LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs -lpthread
 
 APPS    := rdma-client rdma-server
 
