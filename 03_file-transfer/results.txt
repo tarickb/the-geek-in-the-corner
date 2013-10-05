@@ -1,0 +1,27 @@
+ib-host-1$ ./server 
+waiting for connections. interrupt (^C) to exit.
+opening file test-file
+received 10485760 bytes.
+received 10485760 bytes.
+received 5242880 bytes.
+finished transferring test-file
+^C
+
+ib-host-1$ md5sum test-file
+5815ed31a65c5da9745764c887f5f777  test-file
+
+ib-host-2$ dd if=/dev/urandom of=test-file bs=1048576 count=25
+25+0 records in
+25+0 records out
+26214400 bytes (26 MB) copied, 3.11979 seconds, 8.4 MB/s
+
+ib-host-2$ md5sum test-file
+5815ed31a65c5da9745764c887f5f777  test-file
+
+ib-host-2$ ./client ib-host-1 test-file
+received MR, sending file name
+received READY, sending chunk
+received READY, sending chunk
+received READY, sending chunk
+received READY, sending chunk
+received DONE, disconnecting

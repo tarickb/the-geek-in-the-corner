@@ -1,0 +1,23 @@
+title File Transfer
+
+note left of Client: Post receive
+Client->Server: Initiate connection
+note right of Server: Post receive
+Server->Client: Accept connection
+Server->Client: Send memory region details (MSG_MR)
+note left of Client: Re-post receive
+Client->Server: RDMA-write file name
+note right of Server: Open file descriptor
+note right of Server: Re-post receive
+Server->Client: Send ready-to-receive (MSG_READY)
+note left of Client: Re-post receive
+note left of Client: Read chunk from file
+Client->Server: RDMA-write chunk
+note right of Server: Write chunk to file
+note right of Server: Re-post receive
+Server->Client: Send ready-to-receive (MSG_READY)
+note left of Client: Re-post receive
+Client->Server: RDMA-write zero bytes
+Server->Client: Send done (MSG_DONE)
+Client->Server: Close connection
+note right of Server: Close file descriptor

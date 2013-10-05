@@ -1,0 +1,19 @@
+.PHONY: clean
+
+CFLAGS  := -Wall -Werror -g
+LD      := gcc
+LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs
+
+APPS    := client server
+
+all: ${APPS}
+
+client: common.o client.o
+	${LD} -o $@ $^ ${LDFLAGS}
+
+server: common.o server.o
+	${LD} -o $@ $^ ${LDFLAGS}
+
+clean:
+	rm -f *.o ${APPS}
+
