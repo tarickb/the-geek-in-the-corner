@@ -88,8 +88,10 @@ int on_event(struct rdma_cm_event *event)
     r = on_connection(event->id);
   else if (event->event == RDMA_CM_EVENT_DISCONNECTED)
     r = on_disconnect(event->id);
-  else
+  else {
+    fprintf(stderr, "on_event: %d\n", event->event);
     die("on_event: unknown event.");
+  }
 
   return r;
 }
