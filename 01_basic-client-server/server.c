@@ -46,14 +46,14 @@ static struct context *s_ctx = NULL;
 
 int main(int argc, char **argv)
 {
-  struct sockaddr_in addr;
+  struct sockaddr_in6 addr;
   struct rdma_cm_event *event = NULL;
   struct rdma_cm_id *listener = NULL;
   struct rdma_event_channel *ec = NULL;
   uint16_t port = 0;
 
   memset(&addr, 0, sizeof(addr));
-  addr.sin_family = AF_INET;
+  addr.sin6_family = AF_INET6;
 
   TEST_Z(ec = rdma_create_event_channel());
   TEST_NZ(rdma_create_id(ec, &listener, NULL, RDMA_PS_TCP));
