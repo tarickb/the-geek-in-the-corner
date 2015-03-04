@@ -183,13 +183,13 @@ void rc_client_loop(const char *host, const char *port, void *context)
 
 void rc_server_loop(const char *port)
 {
-  struct sockaddr_in addr;
+  struct sockaddr_in6 addr;
   struct rdma_cm_id *listener = NULL;
   struct rdma_event_channel *ec = NULL;
 
   memset(&addr, 0, sizeof(addr));
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(atoi(port));
+  addr.sin6_family = AF_INET6;
+  addr.sin6_port = htons(atoi(port));
 
   TEST_Z(ec = rdma_create_event_channel());
   TEST_NZ(rdma_create_id(ec, &listener, NULL, RDMA_PS_TCP));
