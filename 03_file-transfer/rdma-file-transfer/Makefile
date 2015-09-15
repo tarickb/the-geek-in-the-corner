@@ -2,17 +2,17 @@
 
 CFLAGS  := -Wall -Werror -g
 LD      := gcc
-LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs -lpthread
+LDLIBS  := ${LDLIBS} -lrdmacm -libverbs -lpthread
 
 APPS    := client server
 
 all: ${APPS}
 
 client: common.o client.o
-	${LD} -o $@ $^ ${LDFLAGS}
+	${LD} -o $@ $^ ${LDLIBS}
 
 server: common.o server.o
-	${LD} -o $@ $^ ${LDFLAGS}
+	${LD} -o $@ $^ ${LDLIBS}
 
 clean:
 	rm -f *.o ${APPS}
