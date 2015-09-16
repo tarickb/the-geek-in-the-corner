@@ -1,7 +1,7 @@
 .PHONY: clean
 
 CFLAGS  := -Wall -g
-LDFLAGS := ${LDFLAGS} -lrdmacm -libverbs -lpthread
+LDLIBS  := ${LDLIBS} -lrdmacm -libverbs -lpthread
 
 APPS    := server client
 
