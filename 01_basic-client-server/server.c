@@ -46,14 +46,22 @@ static struct context *s_ctx = NULL;
 
 int main(int argc, char **argv)
 {
+#if _USE_IPV6
   struct sockaddr_in6 addr;
+#else
+  struct sockaddr_in addr;
+#endif
   struct rdma_cm_event *event = NULL;
   struct rdma_cm_id *listener = NULL;
   struct rdma_event_channel *ec = NULL;
   uint16_t port = 0;
 
   memset(&addr, 0, sizeof(addr));
+#if _USE_IPV6
   addr.sin6_family = AF_INET6;
+#else
+  addr.sin_family = AF_INET;
+#endif
 
   TEST_Z(ec = rdma_create_event_channel());
   TEST_NZ(rdma_create_id(ec, &listener, NULL, RDMA_PS_TCP));
@@ -161,15 +169,15 @@ void register_memory(struct connection *conn)
   conn->recv_region = malloc(BUFFER_SIZE);
 
   TEST_Z(conn->send_mr = ibv_reg_mr(
-    s_ctx->pd, 
-    conn->send_region, 
-    BUFFER_SIZE, 
+    s_ctx->pd,
+    conn->send_region,
+    BUFFER_SIZE,
     IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
   TEST_Z(conn->recv_mr = ibv_reg_mr(
-    s_ctx->pd, 
-    conn->recv_region, 
-    BUFFER_SIZE, 
+    s_ctx->pd,
+    conn->recv_region,
+    BUFFER_SIZE,
     IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 }
 
