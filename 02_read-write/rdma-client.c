@@ -51,10 +51,14 @@ int main(int argc, char **argv)
 
 int on_addr_resolved(struct rdma_cm_id *id)
 {
+  int i = 0;
+
   printf("address resolved.\n");
 
   build_connection(id);
-  sprintf(get_local_message_region(id->context), "message from active/client side with pid %d", getpid());
+  for (i=0; i<NUM_SGE; i++) {
+    sprintf(get_local_message_region(id->context, i), "[Client: buf%d] message from active/client side with pid %d", i, getpid());
+  }
   TEST_NZ(rdma_resolve_route(id, TIMEOUT_IN_MS));
 
   return 0;
