@@ -111,7 +111,8 @@ static void on_completion(struct ibv_wc *wc)
       send_message(id);
 
     } else {
-      memcpy(ctx->file_name, ctx->buffer, (size > MAX_FILE_NAME) ? MAX_FILE_NAME : size);
+      size = (size > MAX_FILE_NAME) ? MAX_FILE_NAME : size;
+      memcpy(ctx->file_name, ctx->buffer, size);
       ctx->file_name[size - 1] = '\0';
 
       printf("opening file %s\n", ctx->file_name);
