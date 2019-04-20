@@ -172,13 +172,13 @@ void register_memory(struct connection *conn)
     s_ctx->pd,
     conn->send_region,
     BUFFER_SIZE,
-    IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
+    0));
 
   TEST_Z(conn->recv_mr = ibv_reg_mr(
     s_ctx->pd,
     conn->recv_region,
     BUFFER_SIZE,
-    IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
+    IBV_ACCESS_LOCAL_WRITE));
 }
 
 void on_completion(struct ibv_wc *wc)
