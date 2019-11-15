@@ -65,7 +65,7 @@ static void on_pre_conn(struct rdma_cm_id *id)
   TEST_Z(ctx->buffer_mr = ibv_reg_mr(rc_get_pd(), ctx->buffer, BUFFER_SIZE, IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
   posix_memalign((void **)&ctx->msg, sysconf(_SC_PAGESIZE), sizeof(*ctx->msg));
-  TEST_Z(ctx->msg_mr = ibv_reg_mr(rc_get_pd(), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
+  TEST_Z(ctx->msg_mr = ibv_reg_mr(rc_get_pd(), ctx->msg, sizeof(*ctx->msg), 0));
 
   post_receive(id);
 }
@@ -111,7 +111,8 @@ static void on_completion(struct ibv_wc *wc)
       send_message(id);
 
     } else {
-      memcpy(ctx->file_name, ctx->buffer, (size > MAX_FILE_NAME) ? MAX_FILE_NAME : size);
+      size = (size > MAX_FILE_NAME) ? MAX_FILE_NAME : size;
+      memcpy(ctx->file_name, ctx->buffer, size);
       ctx->file_name[size - 1] = '\0';
 
       printf("opening file %s\n", ctx->file_name);

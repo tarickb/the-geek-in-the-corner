@@ -290,25 +290,25 @@ void register_memory(struct connection *conn)
     s_ctx->pd, 
     conn->send_msg, 
     sizeof(struct message), 
-    IBV_ACCESS_LOCAL_WRITE));
+    0));
 
   TEST_Z(conn->recv_mr = ibv_reg_mr(
     s_ctx->pd, 
     conn->recv_msg, 
     sizeof(struct message), 
-    IBV_ACCESS_LOCAL_WRITE | ((s_mode == M_WRITE) ? IBV_ACCESS_REMOTE_WRITE : IBV_ACCESS_REMOTE_READ)));
+    IBV_ACCESS_LOCAL_WRITE));
 
   TEST_Z(conn->rdma_local_mr = ibv_reg_mr(
     s_ctx->pd, 
     conn->rdma_local_region, 
     RDMA_BUFFER_SIZE * NUM_SGE, 
-    IBV_ACCESS_LOCAL_WRITE));
+    ((s_mode == M_WRITE) ? 0 : IBV_ACCESS_LOCAL_WRITE));
 
   TEST_Z(conn->rdma_remote_mr = ibv_reg_mr(
     s_ctx->pd, 
     conn->rdma_remote_region, 
     RDMA_BUFFER_SIZE * NUM_SGE, 
-    IBV_ACCESS_LOCAL_WRITE | ((s_mode == M_WRITE) ? IBV_ACCESS_REMOTE_WRITE : IBV_ACCESS_REMOTE_READ)));
+    ((s_mode == M_WRITE) ? (IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE) : IBV_ACCESS_REMOTE_READ)));
 }
 
 void send_message(struct connection *conn)
